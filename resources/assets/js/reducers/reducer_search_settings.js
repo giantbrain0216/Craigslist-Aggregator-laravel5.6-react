@@ -43,7 +43,6 @@ export const searchConfigurationReducer = (state = initialState, action) => {
         case constants.actionTypes.SEARCH_SETTINGS_LOADING:
             return Object.assign({}, state, {
                 loading:true,
-                loaded:false
             });
 
         case constants.actionTypes.SEARCH_SETTINGS_LOADED:

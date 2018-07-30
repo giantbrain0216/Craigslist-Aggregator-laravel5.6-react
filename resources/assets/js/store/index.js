@@ -16,6 +16,8 @@ const store = createStore(
 );
 
 export default {
-    store,
-    history
+    configuration:{
+        store,
+        history
+    }
 };

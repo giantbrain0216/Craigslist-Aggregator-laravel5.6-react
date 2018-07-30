@@ -7,13 +7,66 @@ import { withRouter } from 'react-router-dom';
 
 const AreaPartial = ({area, callback}) => {
     return (
-        <label key={area.partial} htmlFor={area.partial}>
+        <label htmlFor={area.partial}>
             <input onClick={callback}
                    className="regions"
                    type="checkbox"
                    id={area.partial}
                    value={area.partial}
             />{`${area.name}, ${area.state}`}</label>
+    );
+};
+
+const RegionPartial = ({region, callback}) =>{
+    return (
+        <label htmlFor={region.type}>
+            <input onClick={callback}
+                   className="regions"
+                   type="checkbox"
+                   id={region.type}
+                   value={region.type} />{region.name}</label>
+    );
+};
+
+const TextField = ({field, state})=>{
+    return (
+        <div className="text-field">
+            <label className="fields" htmlFor={field.argId}>{field.argTitle}</label>
+            <input className="fields" type="text" value={state.form[field.argName]} id={field.argId} />
+            <br />
+        </div>
+    );
+};
+
+const RadioField = ({radio})=>{
+    return (
+        <div className="radio-box-field">
+            <label className="fields" htmlFor={radio.arg_name_id}>{radio.arg_name}</label>
+            <input className="fields" type="radio" value={radio.arg} id={radio.arg_name_id} />
+            <br />
+        </div>
+    );
+};
+
+const RadioFields = ({radios})=>{
+    return (
+        <div className="radio-box-fields">
+            {radios.map(radio=>{
+                return (
+                    <RadioField key={radio.arg_name_id} radio={radio} />
+                );
+            })}
+        </div>
+    );
+};
+
+const CheckBoxField = ({field}) =>{
+    return (
+        <div className="checkbox-field">
+            <label className="fields" htmlFor={field.checkbox.arg_name}>{field.checkbox.title}</label>
+            <input className="fields" type="checkbox" value={field.checkbox.value} id={field.checkbox.arg_name} />
+            <br />
+        </div>
     );
 };
 
@@ -106,7 +159,8 @@ class Navigation extends Component {
     {
         // will trigger the callback function whenever a new Route renders a component(as long as this component stays mounted as routes change)
         const {dispatch, history} = this.props;
-        dispatch(actions.search.fetchSearchSettings(this.props.site));
+        dispatch(actions.search.fetchSearchSettings(history.location.state.section));
+
         history.listen(() => {
             let  {state} = history.location;
             // view new URL
@@ -115,7 +169,11 @@ class Navigation extends Component {
         });
     }
 
-    render() {
+    render()
+    {
+        if(!this.props.loaded && !this.props.loading)
+            return null;
+
         if(this.props.loading)
             return (<div>Loading...</div>);
 
@@ -129,35 +187,17 @@ class Navigation extends Component {
                         {
                             case 'text':
                                 return (
-                                    <div key={fieldKey} className="text-field">
-                                        <label className="fields" htmlFor={field.argId}>{field.argTitle}</label>
-                                        <input className="fields" type="text" value={this.state.form[field.argName]} id={field.argId} />
-                                        <br />
-                                    </div>
+                                    <TextField key={field.argName} field={field} state={this.state} />
                                 );
 
                             case 'radio':
                                 return (
-                                    <div key={fieldKey} className="radio-box-field">
-                                        {field.radios.map(radio=>{
-                                            return (
-                                                <div key={radio.arg_name_id}>
-                                                    <label className="fields" htmlFor={radio.arg_name_id}>{radio.arg_name}</label>
-                                                    <input className="fields" type="radio" value={radio.arg} id={radio.arg_name_id} />
-                                                    <br />
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
+                                    <RadioFields key={field.argName} radios={field.radios} />
                                 );
 
                             case 'checkbox':
                                 return (
-                                    <div key={fieldKey} className="checkbox-field">
-                                        <label className="fields" htmlFor={field.checkbox.arg_name}>{field.checkbox.title}</label>
-                                        <input className="fields" type="checkbox" value={field.checkbox.value} id={field.checkbox.arg_name} />
-                                        <br />
-                                    </div>
+                                    <CheckBoxField key={field.checkbox.arg_name} field={field} />
                                 );
                         }
                     })}
@@ -174,12 +214,10 @@ class Navigation extends Component {
                     <div className={this.regionListStyles()} id="region_list">
                         {this.props.region_list.map(region=>{
                             return (
-                                <label key={region.type} htmlFor={region.type}>
-                                    <input onClick={()=>this.updateRegionSelection(region)}
-                                           className="regions"
-                                           type="checkbox"
-                                           id={region.type}
-                                           value={region.type} />{region.name}</label>
+                                <RegionPartial
+                                    key={region.type}
+                                    region={region}
+                                    callback={()=>this.updateRegionSelection(region)} />
                             );
                         })}
                     </div><br />
