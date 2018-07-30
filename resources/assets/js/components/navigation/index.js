@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import filter from 'lodash/filter';
 import actions from '../../actions/index';
+import { withRouter } from 'react-router-dom';
 
 const AreaPartial = ({area, callback}) => {
     return (
@@ -103,8 +104,15 @@ class Navigation extends Component {
 
     componentWillMount()
     {
-        const {dispatch} = this.props;
+        // will trigger the callback function whenever a new Route renders a component(as long as this component stays mounted as routes change)
+        const {dispatch, history} = this.props;
         dispatch(actions.search.fetchSearchSettings(this.props.site));
+        history.listen(() => {
+            let  {state} = history.location;
+            // view new URL
+            console.log('New URL', history.location);
+            dispatch(actions.search.fetchSearchSettings(state.section));
+        });
     }
 
     render() {
@@ -210,5 +218,4 @@ class Navigation extends Component {
 }
 
 const mapStateToProps = state => state.search_settings;
-
-export default connect(mapStateToProps)(Navigation);
+export default withRouter(connect(mapStateToProps)(Navigation));
