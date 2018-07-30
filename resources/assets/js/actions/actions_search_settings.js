@@ -57,7 +57,7 @@ export const updateAreaSelection = (area) => ({
 });
 
 export const updateRegionSelection = (region) => ({
-    type: constants.actionTypes.SEARCH_SETTINGS_UPDATE_AREA_SELECTION,
+    type: constants.actionTypes.SEARCH_SETTINGS_UPDATE_REGION_SELECTION,
     region
 });
 

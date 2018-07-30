@@ -101,6 +101,12 @@ class Navigation extends Component {
         }))
     };
 
+    componentWillMount()
+    {
+        const {dispatch} = this.props;
+        dispatch(actions.search.fetchSearchSettings(this.props.site));
+    }
+
     render() {
         if(this.props.loading)
             return (<div>Loading...</div>);
@@ -115,7 +121,7 @@ class Navigation extends Component {
                         {
                             case 'text':
                                 return (
-                                    <div>
+                                    <div key={fieldKey} className="text-field">
                                         <label className="fields" htmlFor={field.argId}>{field.argTitle}</label>
                                         <input className="fields" type="text" value={this.state.form[field.argName]} id={field.argId} />
                                         <br />
@@ -124,10 +130,10 @@ class Navigation extends Component {
 
                             case 'radio':
                                 return (
-                                    <div className="radio-box">
+                                    <div key={fieldKey} className="radio-box-field">
                                         {field.radios.map(radio=>{
                                             return (
-                                                <div>
+                                                <div key={radio.arg_name_id}>
                                                     <label className="fields" htmlFor={radio.arg_name_id}>{radio.arg_name}</label>
                                                     <input className="fields" type="radio" value={radio.arg} id={radio.arg_name_id} />
                                                     <br />
@@ -139,7 +145,7 @@ class Navigation extends Component {
 
                             case 'checkbox':
                                 return (
-                                    <div className="checkbox">
+                                    <div key={fieldKey} className="checkbox-field">
                                         <label className="fields" htmlFor={field.checkbox.arg_name}>{field.checkbox.title}</label>
                                         <input className="fields" type="checkbox" value={field.checkbox.value} id={field.checkbox.arg_name} />
                                         <br />

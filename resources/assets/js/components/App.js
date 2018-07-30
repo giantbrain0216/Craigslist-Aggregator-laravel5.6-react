@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router' // react-router v4
 import TopHeader from './TopHeader';
 import Navigation from './Navigation';
 import Content from './Content';
+import { Route, Switch } from 'react-router-dom';
 
 const Home = ()=>{
     return <div id="content-container"/>;
