@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import TopHeader from './TopHeader';
-import Navigation from './Navigation';
-import Content from './Content';
+import TopHeader from './topheader';
+import Navigation from './navigation';
+import Content from './content';
+import Home from './home';
 import { Route, Switch } from 'react-router-dom';
-
-const Home = ()=>{
-    return <div id="content-container"/>;
-};
 
 class App extends Component {
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import filter from 'lodash/filter';
-import actions from '../actions';
+import actions from '../../actions/index';
 
 const AreaPartial = ({area, callback}) => {
     return (
