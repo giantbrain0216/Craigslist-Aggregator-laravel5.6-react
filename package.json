@@ -11,15 +11,32 @@
     },
     "devDependencies": {
         "axios": "^0.18",
+        "babel-core": "^6.26.3",
         "babel-preset-react": "^6.23.0",
+        "babel-preset-react-app": "^3.1.2",
         "bootstrap": "^4.0.0",
+        "classnames": "^2.2.6",
+        "connected-react-router": "^4.3.0",
         "cross-env": "^5.1",
+        "history": "^4.7.2",
         "jquery": "^3.2",
         "laravel-mix": "^2.0",
         "lodash": "^4.17.10",
         "popper.js": "^1.12",
         "react": "^16.2.0",
-        "react-dom": "^16.2.0"
+        "react-dom": "^16.2.0",
+        "react-redux": "^5.0.7",
+        "react-router": "^4.3.1",
+        "react-router-dom": "^4.3.1",
+        "redux": "^4.0.0",
+        "redux-thunk": "^2.3.0",
+        "styled-components": "^3.3.3"
     },
-    "dependencies": []
+    "dependencies": {
+    },
+    "babel": {
+        "presets": [
+            "react-app"
+        ]
+    }
 }
