@@ -1,5 +1,4 @@
 import constants from '../constants';
-import each from 'lodash/each';
 
 export const initialState = {
     sections:['stuff','jobs','gigs','places','services'],
@@ -21,19 +20,22 @@ export const searchConfigurationReducer = (state = initialState, action) => {
     switch (action.type) {
 
         case constants.actionTypes.SEARCH_SETTINGS_SITE:
-            return Object.assign({}, state, {
+            return Object.assign({}, {
+                ...state,
                 site:action.site
             });
 
         case constants.actionTypes.SEARCH_SETTINGS_UPDATE_BASIC_CONF_DATA:
-            return Object.assign({}, state, {
+            return Object.assign({}, {
+                ...state,
                 title:action.title,
                 page_title:action.page_title,
                 search_example:action.search_example
             });
 
         case constants.actionTypes.SEARCH_SETTINGS_UPDATE_EXTENDED_CONF_DATA:
-            return Object.assign({}, state, {
+            return Object.assign({}, {
+                ...state,
                 form:action.form,
                 fields:action.fields,
                 area_list:action.area_list,
@@ -41,23 +43,27 @@ export const searchConfigurationReducer = (state = initialState, action) => {
             });
 
         case constants.actionTypes.SEARCH_SETTINGS_LOADING:
-            return Object.assign({}, state, {
+            return Object.assign({}, {
+                ...state,
                 loading:true,
             });
 
         case constants.actionTypes.SEARCH_SETTINGS_LOADED:
-            return Object.assign({}, state, {
+            return Object.assign({}, {
+                ...state,
                 loading:false,
                 loaded:true
             });
 
         case constants.actionTypes.SEARCH_SETTINGS_REGION_TOGGLE:
-            return Object.assign({}, state, {
+            return Object.assign({}, {
+                ...state,
                 is_region_list_open: !state.is_region_list_open
             });
 
         case constants.actionTypes.SEARCH_SETTINGS_AREA_TOGGLE:
-            return Object.assign({}, state, {
+            return Object.assign({}, {
+                ...state,
                 is_area_list_open: !state.is_area_list_open
             });
 
@@ -71,13 +77,16 @@ export const searchConfigurationReducer = (state = initialState, action) => {
                 ...oldState,
                 selected
             }));
-            return Object.assign({}, state);
+
+            return Object.assign({}, {
+                ...state
+            });
         }
 
         case constants.actionTypes.SEARCH_SETTINGS_UPDATE_REGION_SELECTION:
         {
             let selected = !action.region.selected;
-            let index = state.region_list.indexOf(constants.actionTypes.region);
+            let index = state.region_list.indexOf(action.region);
             let oldState = state.region_list[index];
 
             state.region_list.splice(index, 1, Object.assign({}, {
@@ -85,7 +94,7 @@ export const searchConfigurationReducer = (state = initialState, action) => {
                 selected
             }));
 
-            each(state.area_list, (obj, idx) => {
+            state.area_list.forEach((obj, idx)=>{
                 if(obj.type === action.region.type)
                 {
                     state.area_list.splice(idx, 1, Object.assign({}, {
@@ -94,7 +103,10 @@ export const searchConfigurationReducer = (state = initialState, action) => {
                     }));
                 }
             });
-            return Object.assign({}, state);
+
+            return Object.assign({}, {
+                ...state
+            });
         }
 
         default:

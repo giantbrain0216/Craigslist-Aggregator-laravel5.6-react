@@ -4,15 +4,22 @@ import classNames from 'classnames';
 import filter from 'lodash/filter';
 import actions from '../../actions/index';
 import { withRouter } from 'react-router-dom';
+import debounce from 'lodash/debounce';
+
+import {TextField} from './TextField';
+import {RadioFields} from './RadioFields';
+import {CheckBoxField} from './CheckBoxField';
 
 const AreaPartial = ({area, callback}) => {
     return (
         <label htmlFor={area.partial}>
-            <input onClick={callback}
-                   className="regions"
-                   type="checkbox"
-                   id={area.partial}
-                   value={area.partial}
+            <input
+                id={area.partial}
+                onClick={callback}
+                className="regions"
+                type="checkbox"
+                checked={area.selected}
+                value={area.partial}
             />{`${area.name}, ${area.state}`}</label>
     );
 };
@@ -20,120 +27,68 @@ const AreaPartial = ({area, callback}) => {
 const RegionPartial = ({region, callback}) =>{
     return (
         <label htmlFor={region.type}>
-            <input onClick={callback}
-                   className="regions"
-                   type="checkbox"
-                   id={region.type}
-                   value={region.type} />{region.name}</label>
-    );
-};
-
-const TextField = ({field, state})=>{
-    return (
-        <div className="text-field">
-            <label className="fields" htmlFor={field.argId}>{field.argTitle}</label>
-            <input className="fields" type="text" value={state.form[field.argName]} id={field.argId} />
-            <br />
-        </div>
-    );
-};
-
-const RadioField = ({radio})=>{
-    return (
-        <div className="radio-box-field">
-            <label className="fields" htmlFor={radio.arg_name_id}>{radio.arg_name}</label>
-            <input className="fields" type="radio" value={radio.arg} id={radio.arg_name_id} />
-            <br />
-        </div>
-    );
-};
-
-const RadioFields = ({radios})=>{
-    return (
-        <div className="radio-box-fields">
-            {radios.map(radio=>{
-                return (
-                    <RadioField key={radio.arg_name_id} radio={radio} />
-                );
-            })}
-        </div>
-    );
-};
-
-const CheckBoxField = ({field}) =>{
-    return (
-        <div className="checkbox-field">
-            <label className="fields" htmlFor={field.checkbox.arg_name}>{field.checkbox.title}</label>
-            <input className="fields" type="checkbox" value={field.checkbox.value} id={field.checkbox.arg_name} />
-            <br />
-        </div>
+            <input
+                id={region.type}
+                onClick={callback}
+                className="regions"
+                type="checkbox"
+                checked={region.selected}
+                value={region.type}
+            />{region.name}</label>
     );
 };
 
 class Navigation extends Component {
 
-    constructor(){
+    state = {
+        form:{}
+    };
+
+    constructor() {
         super();
-
-        this.state = {
-            form:{
-                required:true
-            }
-        };
-
-        this.toggleRegionList = this.toggleRegionList.bind(this);
-        this.toggleAreaList = this.toggleAreaList.bind(this);
-        this.getSelectedAreas = this.getSelectedAreas.bind(this);
-        this.getTotalSelectedAreas = this.getTotalSelectedAreas.bind(this);
-        this.getUnselectedAreas = this.getUnselectedAreas.bind(this);
-        this.regionListStyles = this.regionListStyles.bind(this);
-        this.areaListStyles = this.areaListStyles.bind(this);
-        this.updateRegionSelection = this.updateRegionSelection.bind(this);
-        this.updateAreaSelection = this.updateAreaSelection.bind(this);
-        this.submitForm = this.submitForm.bind(this);
     }
 
-    toggleRegionList () {
+    toggleRegionList = () => {
         const { dispatch } = this.props;
         dispatch(actions.search.toggleRegionList());
     };
 
-    toggleAreaList () {
+    toggleAreaList = () => {
         const { dispatch } = this.props;
         dispatch(actions.search.toggleAreaList());
     };
 
-    getSelectedAreas () {
+    getSelectedAreas = () => {
         return filter(this.props.area_list, {
             selected:true
         });
     };
 
-    getTotalSelectedAreas () {
+    getTotalSelectedAreas = () => {
         return filter(this.props.area_list, {
             selected:true
         }).length;
     };
 
-    getUnselectedAreas() {
+    getUnselectedAreas = () => {
         return filter(this.props.area_list,{
             selected:false
         });
     };
 
-    regionListStyles() {
+    regionListStyles = () => {
         return classNames({
             ['open']: this.props.is_region_list_open
         });
     };
 
-    areaListStyles() {
+    areaListStyles = () => {
         return classNames({
             ['open']: this.props.is_area_list_open
         });
     };
 
-    updateRegionSelection (region) {
+    updateRegionSelection = (region) => {
         const { dispatch } = this.props;
         dispatch(actions.search.updateRegionSelection(region));
     };
@@ -141,9 +96,9 @@ class Navigation extends Component {
     updateAreaSelection (area) {
         const { dispatch } = this.props;
         dispatch(actions.search.updateAreaSelection(area));
-    };
+    }
 
-    submitForm (e) {
+    submitForm = (e) => {
         e.preventDefault();
         const { dispatch, site, area_list, region_list } = this.props;
         const {form} = this.state;
@@ -153,6 +108,48 @@ class Navigation extends Component {
             area_list,
             region_list
         }))
+    };
+
+    onTextChangeDeBounce = debounce(({elm, key}) => {
+        this.setState(Object.assign({}, {
+            form:{
+                ...this.state.form,
+                [key]:elm.target.value
+            }
+        }));
+    }, 50);
+
+    onRadioChangeDeBounce = debounce(({elm, key}) => {
+        this.setState(Object.assign({}, {
+            form:{
+                ...this.state.form,
+                [key]:elm.target.value
+            }
+        }));
+    }, 50);
+
+    onCheckBoxChangeDeBounce = debounce(({elm, key}) => {
+        this.setState(Object.assign({}, {
+            form:{
+                ...this.state.form,
+                [key]:elm.target.checked
+            }
+        }));
+    }, 50);
+
+    onTextChange = ({elm, key}) =>{
+        elm.persist();
+        this.onTextChangeDeBounce({elm, key});
+    };
+
+    onRadioChange = ({elm, key}) =>{
+        elm.persist();
+        this.onRadioChangeDeBounce({elm, key});
+    };
+
+    onCheckBoxChange = ({elm, key}) =>{
+        elm.persist();
+        this.onCheckBoxChangeDeBounce({elm, key});
     };
 
     componentWillMount()
@@ -187,17 +184,28 @@ class Navigation extends Component {
                         {
                             case 'text':
                                 return (
-                                    <TextField key={field.argName} field={field} state={this.state} />
+                                    <TextField
+                                        key={field.argName}
+                                        cb={this.onTextChange}
+                                        field={field}
+                                        state={this.state} />
                                 );
 
                             case 'radio':
                                 return (
-                                    <RadioFields key={field.argName} radios={field.radios} />
+                                    <RadioFields
+                                        key={field.argName}
+                                        field={field}
+                                        cb={this.onRadioChange}
+                                        radios={field.radios} />
                                 );
 
                             case 'checkbox':
                                 return (
-                                    <CheckBoxField key={field.checkbox.arg_name} field={field} />
+                                    <CheckBoxField
+                                        key={field.checkbox.arg_name}
+                                        field={field}
+                                        cb={this.onCheckBoxChange} />
                                 );
                         }
                     })}
