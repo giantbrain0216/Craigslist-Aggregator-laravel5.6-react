@@ -72,35 +72,47 @@ export const searchConfigurationReducer = (state = initialState, action) => {
 
         case constants.actionTypes.SEARCH_SETTINGS_UPDATE_AREA_SELECTION:
         {
-            let {selected} = action.region;
-            state.area_list[action.area.partial] = {
-                ...action.area,
-                selected
-            };
+            let {selected, partial} = action.area;
 
-            return Object.assign({}, {...state})
+            return Object.assign({}, {
+                ...state,
+                area_list:{
+                    ...state.area_list,
+                    [partial]:{
+                        ...action.area,
+                        selected
+                    }
+                }
+            })
         }
 
         case constants.actionTypes.SEARCH_SETTINGS_UPDATE_REGION_SELECTION:
         {
             let {selected} = action.region;
 
-            state.region_list[action.region.type] = {
-                ...action.region
+            let area_list = {
+                ...state.area_list
             };
 
-            let update = filter(state.area_list, (area)=>{
-                return area.type === action.region.type;
-            });
+            Object.entries(state.area_list)
+                .filter(([key, area]) => area.type === action.region.type)
+                .forEach(([key, area]) => {
+                    area_list[key] = {
+                        ...area,
+                        selected
+                    }
+                });
 
-            map(update, (area)=>{
-                state.area_list[area.partial] = {
-                    ...area,
-                    selected
-                };
-            });
-
-            return Object.assign({}, {...state})
+            return Object.assign({}, {
+                ...state,
+                region_list:{
+                    ...state.region_list,
+                    [action.region.type]:{
+                        ...action.region
+                    }
+                },
+                area_list
+            })
         }
 
         default:
