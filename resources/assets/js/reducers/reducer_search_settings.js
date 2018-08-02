@@ -22,10 +22,10 @@ export const searchConfigurationReducer = (state = initialState, action) => {
     switch (action.type) {
 
         case constants.actionTypes.SEARCH_SETTINGS_SITE:
-            return {
+            return Object.assign({},{
                 ...state,
                 site:action.site
-            };
+            });
 
         case constants.actionTypes.SEARCH_SETTINGS_UPDATE_BASIC_CONF_DATA:
             return {
@@ -36,59 +36,57 @@ export const searchConfigurationReducer = (state = initialState, action) => {
             };
 
         case constants.actionTypes.SEARCH_SETTINGS_UPDATE_EXTENDED_CONF_DATA:
-            return {
+            return Object.assign({},{
                 ...state,
                 form:action.form,
                 fields:action.fields,
                 area_list:action.area_list,
                 region_list:action.region_list
-            };
+            });
 
         case constants.actionTypes.SEARCH_SETTINGS_LOADING:
-            return {
+            return Object.assign({},{
                 ...state,
                 loading:true,
-            };
+            });
 
         case constants.actionTypes.SEARCH_SETTINGS_LOADED:
-            return {
+            return Object.assign({},{
                 ...state,
                 loading:false,
                 loaded:true
-            };
+            });
 
         case constants.actionTypes.SEARCH_SETTINGS_REGION_TOGGLE:
-            return {
+            return Object.assign({}, {
                 ...state,
                 is_region_list_open: !state.is_region_list_open
-            };
+            });
 
         case constants.actionTypes.SEARCH_SETTINGS_AREA_TOGGLE:
-            return {
+            return Object.assign({}, {
                 ...state,
                 is_area_list_open: !state.is_area_list_open
-            };
+            });
+
 
         case constants.actionTypes.SEARCH_SETTINGS_UPDATE_AREA_SELECTION:
         {
-            let selected = !action.area.selected;
+            let {selected} = action.region;
             state.area_list[action.area.partial] = {
                 ...action.area,
                 selected
             };
 
-            return {
-                ...state
-            }
+            return Object.assign({}, {...state})
         }
 
         case constants.actionTypes.SEARCH_SETTINGS_UPDATE_REGION_SELECTION:
         {
-            let selected = !action.region.selected;
+            let {selected} = action.region;
 
             state.region_list[action.region.type] = {
-                ...action.region,
-                selected
+                ...action.region
             };
 
             let update = filter(state.area_list, (area)=>{
@@ -102,9 +100,7 @@ export const searchConfigurationReducer = (state = initialState, action) => {
                 };
             });
 
-            return {
-                ...state
-            }
+            return Object.assign({}, {...state})
         }
 
         default:

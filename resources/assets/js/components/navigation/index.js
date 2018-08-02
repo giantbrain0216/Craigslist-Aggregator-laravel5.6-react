@@ -1,44 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
-import filter from 'lodash/filter';
-import map from 'lodash/map';
 import actions from '../../actions/index';
 import { withRouter } from 'react-router-dom';
 import debounce from 'lodash/debounce';
-
 import {TextField} from './TextField';
 import {RadioFields} from './RadioFields';
 import {CheckBoxField} from './CheckBoxField';
-
-const AreaPartial = ({area, callback}) => {
-    return (
-        <label htmlFor={area.partial}>
-            <input
-                id={area.partial}
-                onClick={callback}
-                className="regions"
-                type="checkbox"
-                checked={area.selected}
-                value={area.partial}
-            />{`${area.name}, ${area.state}`}</label>
-    );
-};
-
-const RegionPartial = ({region, callback}) =>{
-    return (
-        <label htmlFor={region.type}>
-            <input
-                id={region.type}
-                onClick={callback}
-                className="regions"
-                type="checkbox"
-                checked={region.selected}
-                value={region.type}
-            />{region.name}</label>
-    );
-};
-
+import Regions from './Regions';
+import Areas from './Areas';
 class Navigation extends Component {
 
     state = {
@@ -47,51 +16,6 @@ class Navigation extends Component {
 
     constructor() {
         super();
-    }
-
-    toggleRegionList = () => {
-        const { dispatch } = this.props;
-        dispatch(actions.search.toggleRegionList());
-    };
-
-    toggleAreaList = () => {
-        const { dispatch } = this.props;
-        dispatch(actions.search.toggleAreaList());
-    };
-
-    getSelectedAreas = () => {
-        return filter(this.props.area_list, (area)=>area.selected === true);
-    };
-
-    getTotalSelectedAreas = () => {
-        let selected = filter(this.props.area_list, (area)=>area.selected === true);
-        return Object.keys(selected).length;
-    };
-
-    getUnselectedAreas = () => {
-        return filter(this.props.area_list, (area)=>area.selected !== true);
-    };
-
-    regionListStyles = () => {
-        return classNames({
-            ['open']: this.props.is_region_list_open
-        });
-    };
-
-    areaListStyles = () => {
-        return classNames({
-            ['open']: this.props.is_area_list_open
-        });
-    };
-
-    updateRegionSelection = (region) => {
-        const { dispatch } = this.props;
-        dispatch(actions.search.updateRegionSelection(region));
-    };
-
-    updateAreaSelection (area) {
-        const { dispatch } = this.props;
-        dispatch(actions.search.updateAreaSelection(area));
     }
 
     submitForm = (e) => {
@@ -210,50 +134,8 @@ class Navigation extends Component {
                 </div>
                 <cite>{this.props.page_search_example}</cite>
                 <div id="locations_container">
-                    {'Region:'}
-                    <a onClick={this.toggleRegionList}>
-                        {this.props.is_region_list_open?
-                            <span>close</span>:
-                            <span>open</span>
-                        }
-                    </a>
-                    <div className={this.regionListStyles()} id="region_list">
-                        {map(this.props.region_list, (region, idx)=>{
-                            return (
-                                <RegionPartial
-                                    key={idx}
-                                    region={region}
-                                    callback={()=>this.updateRegionSelection(region)} />
-                            );
-                        })}
-                    </div><br />
-                    {'Areas:'}
-                    <a onClick={this.toggleAreaList}>
-                        {this.props.is_area_list_open?
-                            <span>close</span>:
-                            <span>open</span>
-                        }
-                    </a>
-                    <div className={this.areaListStyles()} id="areas_list">
-                        <label>Selected selected: {this.getTotalSelectedAreas()}</label>
-                        {map(this.getSelectedAreas(), (area, idx)=>{
-                            return (
-                                <AreaPartial
-                                    key={idx}
-                                    area={area}
-                                    callback={()=>this.updateAreaSelection(area)} />
-                            );
-                        })}
-                        <label>Un-Selected</label>
-                        {map(this.getUnselectedAreas(), (area, idx)=>{
-                            return (
-                                <AreaPartial
-                                    key={idx}
-                                    area={area}
-                                    callback={()=>this.updateAreaSelection(area)} />
-                            );
-                        })}
-                    </div>
+                    <Regions />
+                    <Areas />
                 </div>
                 <button id="search_btn" type="submit">Search</button>
             </form>
