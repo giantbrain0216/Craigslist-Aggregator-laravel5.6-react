@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import filter from 'lodash/filter';
+import map from 'lodash/map';
 import actions from '../../actions/index';
 import { withRouter } from 'react-router-dom';
 import debounce from 'lodash/debounce';
@@ -59,21 +60,16 @@ class Navigation extends Component {
     };
 
     getSelectedAreas = () => {
-        return filter(this.props.area_list, {
-            selected:true
-        });
+        return filter(this.props.area_list, (area)=>area.selected === true);
     };
 
     getTotalSelectedAreas = () => {
-        return filter(this.props.area_list, {
-            selected:true
-        }).length;
+        let selected = filter(this.props.area_list, (area)=>area.selected === true);
+        return Object.keys(selected).length;
     };
 
     getUnselectedAreas = () => {
-        return filter(this.props.area_list,{
-            selected:false
-        });
+        return filter(this.props.area_list, (area)=>area.selected !== true);
     };
 
     regionListStyles = () => {
@@ -156,7 +152,9 @@ class Navigation extends Component {
     {
         // will trigger the callback function whenever a new Route renders a component(as long as this component stays mounted as routes change)
         const {dispatch, history} = this.props;
-        dispatch(actions.search.fetchSearchSettings(history.location.state.section));
+
+        if(history.location.state)
+            dispatch(actions.search.fetchSearchSettings(history.location.state.section));
 
         history.listen(() => {
             let  {state} = history.location;
@@ -220,10 +218,10 @@ class Navigation extends Component {
                         }
                     </a>
                     <div className={this.regionListStyles()} id="region_list">
-                        {this.props.region_list.map(region=>{
+                        {map(this.props.region_list, (region, idx)=>{
                             return (
                                 <RegionPartial
-                                    key={region.type}
+                                    key={idx}
                                     region={region}
                                     callback={()=>this.updateRegionSelection(region)} />
                             );
@@ -238,19 +236,19 @@ class Navigation extends Component {
                     </a>
                     <div className={this.areaListStyles()} id="areas_list">
                         <label>Selected selected: {this.getTotalSelectedAreas()}</label>
-                        {this.getSelectedAreas().map(area=>{
+                        {map(this.getSelectedAreas(), (area, idx)=>{
                             return (
                                 <AreaPartial
-                                    key={area.partial}
+                                    key={idx}
                                     area={area}
                                     callback={()=>this.updateAreaSelection(area)} />
                             );
                         })}
                         <label>Un-Selected</label>
-                        {this.getUnselectedAreas().map(area=>{
+                        {map(this.getUnselectedAreas(), (area, idx)=>{
                             return (
                                 <AreaPartial
-                                    key={area.partial}
+                                    key={idx}
                                     area={area}
                                     callback={()=>this.updateAreaSelection(area)} />
                             );

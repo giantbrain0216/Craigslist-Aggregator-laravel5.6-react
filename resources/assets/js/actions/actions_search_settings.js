@@ -1,19 +1,7 @@
 import each from "lodash/each";
+import reduce from "lodash/reduce";
 import axios from "axios/index";
 import constants from "../constants";
-
-const _build_area_list = (area_list) => {
-    let proxy_area = [];
-    each(area_list, function(state)
-    {
-        each(state, function(rec)
-        {
-            rec.selected = false;
-            proxy_area.push(rec);
-        });
-    });
-    return proxy_area;
-};
 
 export const toggleRegionList = () => ({
     type: constants.actionTypes.SEARCH_SETTINGS_REGION_TOGGLE
@@ -102,9 +90,21 @@ export const fetchSearchSettings =  (site) => async (dispatch) => {
         }
     });
 
-    each(region_list, (region)=>{
+    region_list = reduce(region_list, (collector, region)=>{
         region.selected = false;
-    });
+        collector[region.type] = region;
+        return collector;
+    }, {});
+
+    area_list = reduce(area_list, function(collector, state)
+    {
+        each(state, function(rec)
+        {
+            rec.selected = false;
+            collector[rec.partial] = rec;
+        });
+        return collector;
+    }, {});
 
     dispatch(updateExtendedConfData({
         form:{
@@ -112,8 +112,8 @@ export const fetchSearchSettings =  (site) => async (dispatch) => {
             ...form
         },
         fields,
-        area_list:_build_area_list(area_list),
-        region_list
+        region_list,
+        area_list
     }));
 
     dispatch(confIsLoaded());
