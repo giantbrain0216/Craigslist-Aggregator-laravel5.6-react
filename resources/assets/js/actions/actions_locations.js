@@ -15,8 +15,6 @@ export const updateSearchData = (results) => ({
 export const submitSearch = ({data, site, area_list, region_list}) => async (dispatch) => {
     dispatch(locationFetching());
 
-    let {form} = data;
-
     let submit_data = Object.assign({
 
         include: map(filter(area_list,{
@@ -26,7 +24,7 @@ export const submitSearch = ({data, site, area_list, region_list}) => async (dis
         regions: map(filter(region_list,{
             selected:true
         }), obj => obj.type)
-    }, form);
+    }, data);
 
     submit_data = {
         ...submit_data,

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 const LocationItemLink = ({title, link}) =>{
     return (
-        <li key={link}>
+        <li>
             <a className="jobsite"
                title={title}
                target="_blank"
@@ -21,7 +21,10 @@ const LocationItems = ({location, records}) => {
             <h2>{location}</h2>
             <ul className="locationItems">
                 {records.map(rec=>{
-                    return <LocationItemLink link={rec.link} title={rec.title} />
+                    return <LocationItemLink
+                        key={rec.link}
+                        link={rec.link}
+                        title={rec.title} />
                 })}
             </ul>
         </article>
@@ -33,9 +36,12 @@ const LocationsByDate = ({dates}) => {
         <section key={dates.date}>
             <h1>{dates.date}</h1>
             <div className="date">
-                {dates.records.map((records, location)=>{
+                {Object.entries(dates.records).map(([location, records])=>{
                     return (
-                        <LocationItems location={location} records={records} />
+                        <LocationItems
+                            key={location}
+                            location={location}
+                            records={records} />
                     )
                 })}
             </div>
@@ -63,7 +69,7 @@ class Content extends Component {
             <div id="content-container">
                 <div id="link_content">
                     {this.props.search_data.map(dates=>{
-                        return (<LocationsByDate dates={dates} />);
+                        return (<LocationsByDate key={dates.timestamp} dates={dates} />);
                     })}
                 </div>
             </div>
