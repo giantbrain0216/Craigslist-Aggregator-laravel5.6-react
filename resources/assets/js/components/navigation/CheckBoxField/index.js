@@ -1,16 +1,36 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export const CheckBoxField = ({field, cb}) =>{
+const CheckBoxField = ({checkbox, cb}) =>{
     return (
         <div className="checkbox-field">
-            <label className="fields" htmlFor={field.checkbox.arg_name}>{field.checkbox.title}</label>
-            <input id={field.checkbox.arg_name}
+            <label className="fields" htmlFor={checkbox.arg_name}>{checkbox.title}</label>
+            <input id={checkbox.arg_name}
                    className="fields"
                    type="checkbox"
-                   onChange={(e)=>cb({elm:e, key:field.checkbox.arg_name})}
-                   value={field.checkbox.value}
+                   onChange={(e)=>cb({elm:e, key:checkbox.arg_name})}
+                   value={checkbox.value}
             />
-            <br />
         </div>
     );
 };
+
+CheckBoxField.propTypes = {
+    checkbox:PropTypes.shape({
+        title:PropTypes.string.isRequired,
+        arg_name:PropTypes.string.isRequired,
+        value:PropTypes.string.isRequired,
+    }),
+    cb: PropTypes.func.isRequired,
+};
+
+CheckBoxField.defaultProps = {
+    checkbox:{
+        title:'',
+        arg_name:'',
+        value:''
+    },
+    cb:()=>{console.log('checkbox-un-bound')}
+};
+
+export default CheckBoxField;

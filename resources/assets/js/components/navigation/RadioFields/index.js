@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
-const RadioField = ({field, radio, cb})=>{
+const RadioField = ({fieldName, radio, cb})=>{
     return (
         <div className="radio-box-field">
             <label className="fields"
@@ -8,22 +9,56 @@ const RadioField = ({field, radio, cb})=>{
             <input className="fields"
                    id={radio.arg_name_id}
                    type="radio"
-                   name={field.argName}
-                   onChange={(e)=>cb({elm:e, key:field.argName})}
+                   name={fieldName}
+                   onChange={(e)=>cb({elm:e, key:fieldName})}
                    value={radio.arg}  />
             <br />
         </div>
     );
 };
 
-export const RadioFields = ({field, radios, cb})=>{
+RadioField.propTypes = {
+    radio: PropTypes.shape({
+        arg_name_id:PropTypes.string.isRequired,
+        arg_name:PropTypes.string.isRequired,
+        arg:PropTypes.string.isRequired,
+    }),
+    fieldName: PropTypes.string.isRequired,
+    cb: PropTypes.func.isRequired,
+};
+
+RadioField.defaultProps = {
+    radio: {
+        arg_name_id:'',
+        arg_name:'',
+        arg:''
+    },
+    fieldName:'',
+    cb:()=>{}
+};
+
+const RadioFields = ({fieldName, radios, cb})=>{
     return (
         <div className="radio-box-fields">
             {radios.map(radio=>{
                 return (
-                    <RadioField key={radio.arg_name_id} field={field} radio={radio} cb={cb} />
+                    <RadioField key={radio.arg_name_id} fieldName={fieldName} radio={radio} cb={cb} />
                 );
             })}
         </div>
     );
 };
+
+RadioFields.propTypes = {
+    field: PropTypes.object.isRequired,
+    radios: PropTypes.array.isRequired,
+    cb: PropTypes.func.isRequired,
+};
+
+RadioFields.defaultProps = {
+    field: {},
+    radios: [],
+    cb:()=>{}
+};
+
+export default RadioFields;

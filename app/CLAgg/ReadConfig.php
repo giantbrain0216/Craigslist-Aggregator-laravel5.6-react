@@ -110,7 +110,6 @@ class ReadConfig
 
 				unset($array['argId']);
 				unset($array['argKey']);
-				unset($array['argName']);
 				unset($array['argTitle']);
 
 				$array['checkbox'] = array(

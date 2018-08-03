@@ -60,10 +60,10 @@ class Regions extends Component {
                     }
                 </a>
                 <div className={this.regionListStyles()} id="region_list">
-                    {map(this.props.region_list, (region, idx)=>{
+                    {Object.entries(this.props.region_list).map(([key, region])=>{
                         return (
                             <RegionPartial
-                                key={`idx${idx}:${region.selected?1:0}`}
+                                key={`idx${key}:${region.selected?1:0}`}
                                 region={region}
                                 callback={(e)=>this.updateRegionSelection({elm:e, region})} />
                         );

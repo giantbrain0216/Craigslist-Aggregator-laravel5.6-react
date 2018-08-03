@@ -33,16 +33,30 @@ class Areas extends Component {
     };
 
     getSelectedAreas = () => {
-        return filter(this.props.area_list, (area)=>area.selected === true);
+        return Object.entries(this.props.area_list)
+            .filter(([key, area])=>{
+                return area.selected === true;
+            })
+            .reduce((collector, [key, area])=>{
+                collector[area.partial] = area;
+                return collector;
+            },{});
     };
 
     getTotalSelectedAreas = () => {
-        let selected = filter(this.props.area_list, (area)=>area.selected === true);
-        return Object.keys(selected).length;
+        return Object.entries(this.props.area_list)
+            .filter(([key, area])=>area.selected === true).length;
     };
 
     getUnselectedAreas = () => {
-        return filter(this.props.area_list, (area)=>area.selected !== true);
+        return Object.entries(this.props.area_list)
+            .filter(([key, area])=>{
+                return area.selected !== true;
+            })
+            .reduce((collector, [key, area])=>{
+                collector[area.partial] = area;
+                return collector;
+            },{});
     };
 
     areaListStyles = () => {
@@ -73,7 +87,7 @@ class Areas extends Component {
                 </a>
                 <div className={this.areaListStyles()} id="areas_list">
                     <label>Selected selected: {this.getTotalSelectedAreas()}</label>
-                    {map(this.getSelectedAreas(), (area, idx)=>{
+                    {Object.entries(this.getSelectedAreas()).map(([idx, area])=>{
                         return (
                             <AreaPartial
                                 key={`areaSelected:${idx}:${area.selected?1:0}`}
@@ -82,7 +96,7 @@ class Areas extends Component {
                         );
                     })}
                     <label>Un-Selected</label>
-                    {map(this.getUnselectedAreas(), (area, idx)=>{
+                    {Object.entries(this.getUnselectedAreas()).map(([idx, area])=>{
                         return (
                             <AreaPartial
                                 key={`areaUnSelected:${idx}:${area.selected?1:0}`}

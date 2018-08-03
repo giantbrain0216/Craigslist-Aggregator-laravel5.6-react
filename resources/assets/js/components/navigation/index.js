@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import actions from '../../actions/index';
 import { withRouter } from 'react-router-dom';
 import debounce from 'lodash/debounce';
-import {TextField} from './TextField';
-import {RadioFields} from './RadioFields';
-import {CheckBoxField} from './CheckBoxField';
 import Regions from './Regions';
 import Areas from './Areas';
+import PropTypes from "prop-types";
+import FormField from './FormField';
+
 class Navigation extends Component {
 
     state = {
@@ -100,36 +100,17 @@ class Navigation extends Component {
             <form onSubmit={this.submitForm} id="find_items">
                 <div id="change_size_container">
                     <div>{this.props.page_title}</div>
-                    {Object.keys(this.props.fields).map(fieldKey=>{
-                        let field = this.props.fields[fieldKey];
-                        switch(field.argType)
-                        {
-                            case 'text':
-                                return (
-                                    <TextField
-                                        key={field.argName}
-                                        cb={this.onTextChange}
-                                        field={field}
-                                        state={this.state} />
-                                );
-
-                            case 'radio':
-                                return (
-                                    <RadioFields
-                                        key={field.argName}
-                                        field={field}
-                                        cb={this.onRadioChange}
-                                        radios={field.radios} />
-                                );
-
-                            case 'checkbox':
-                                return (
-                                    <CheckBoxField
-                                        key={field.checkbox.arg_name}
-                                        field={field}
-                                        cb={this.onCheckBoxChange} />
-                                );
-                        }
+                    {Object.entries(this.props.fields).map(([key, field])=>{
+                        return (
+                            <FormField
+                                key={field.argName}
+                                field={field}
+                                state={this.state}
+                                onTextChange={this.onTextChange}
+                                onRadioChange={this.onRadioChange}
+                                onCheckBoxChange={this.onCheckBoxChange}
+                            />
+                        );
                     })}
                 </div>
                 <cite>{this.props.page_search_example}</cite>
@@ -142,6 +123,22 @@ class Navigation extends Component {
         );
     }
 }
+
+Navigation.propTypes = {
+    page_title: PropTypes.string.isRequired,
+    site: PropTypes.string.isRequired,
+    page_search_example: PropTypes.string.isRequired,
+    area_list: PropTypes.object.isRequired,
+    region_list: PropTypes.object.isRequired,
+};
+
+Navigation.defaultProps = {
+    page_title:'',
+    site:'',
+    page_search_example:'',
+    area_list:{},
+    region_list:{}
+};
 
 const mapStateToProps = state => state.search_settings;
 export default withRouter(connect(mapStateToProps)(Navigation));
