@@ -16,7 +16,7 @@ const RegionListContainer = styles.div`
 const keySelectAreas = (data, selectedState) =>{
     let area_list = Object.entries(data)
         .filter(([key, area])=>{
-            return area.selected !== selectedState;
+            return area.selected === selectedState;
         })
         .reduce((collector, [key, area])=>{
             collector[area.partial] = area;
