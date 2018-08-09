@@ -2,6 +2,29 @@ import React, {Component} from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import AreaPartial from './AreaPartial';
+import styles from "styled-components";
+
+const RegionListContainer = styles.div`
+  display: none;
+  border: 1px solid gainsboro;
+  
+  &.open {
+    display: block;
+  }
+`;
+
+const keySelectAreas = (data, selectedState) =>{
+    let area_list = Object.entries(data)
+        .filter(([key, area])=>{
+            return area.selected !== selectedState;
+        })
+        .reduce((collector, [key, area])=>{
+            collector[area.partial] = area;
+            return collector;
+        },{});
+    // console.log(area_list);
+    return area_list;
+};
 
 class Areas extends Component {
 
@@ -11,14 +34,7 @@ class Areas extends Component {
     }
 
     getSelectedAreas = () => {
-        return Object.entries(this.props.area_list)
-            .filter(([key, area])=>{
-                return area.selected === true;
-            })
-            .reduce((collector, [key, area])=>{
-                collector[area.partial] = area;
-                return collector;
-            },{});
+        return keySelectAreas(this.props.area_list, true);
     };
 
     getTotalSelectedAreas = () => {
@@ -27,14 +43,7 @@ class Areas extends Component {
     };
 
     getUnselectedAreas = () => {
-        return Object.entries(this.props.area_list)
-            .filter(([key, area])=>{
-                return area.selected !== true;
-            })
-            .reduce((collector, [key, area])=>{
-                collector[area.partial] = area;
-                return collector;
-            },{});
+        return keySelectAreas(this.props.area_list, false);
     };
 
     areaListStyles = () => {
@@ -53,7 +62,7 @@ class Areas extends Component {
                         <span>open</span>
                     }
                 </a>
-            <div className={this.areaListStyles()} id="areas_list">
+                <RegionListContainer className={this.areaListStyles()}>
                     <label>Selected selected: {this.getTotalSelectedAreas()}</label>
                     {Object.entries(this.getSelectedAreas()).map(([idx, area])=>{
                         return (
@@ -72,7 +81,7 @@ class Areas extends Component {
                                 callback={(e)=>this.props.onUpdateAreaSelection({elm:e,area})} />
                         );
                     })}
-                </div>
+                </RegionListContainer>
             </div>
         );
     }

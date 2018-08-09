@@ -52,6 +52,9 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
     fetchSearchSettings: (section) => () => {
         dispatch(actions.search.fetchSearchSettings(section));
     },
+    onFormUpdateField: ({key, value}) => () => {
+        dispatch(actions.search.updateFormFields({key, value}));
+    },
 }, dispatch);
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NavigationContainer));

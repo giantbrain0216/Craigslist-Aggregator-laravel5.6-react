@@ -43,31 +43,21 @@ class Navigation extends Component {
         super();
     }
 
+    updateFormState = (key, value) => {
+        console.log('updating-state','key', key, 'value', value);
+        this.props.onFormUpdateField({key,value});
+    };
+
     onTextChangeDeBounce = debounce(({elm, key}) => {
-        this.setState(Object.assign({}, {
-            form:{
-                ...this.state.form,
-                [key]:elm.target.value
-            }
-        }));
+        this.updateFormState(key, elm.target.value);
     }, 50);
 
     onRadioChangeDeBounce = debounce(({elm, key}) => {
-        this.setState(Object.assign({}, {
-            form:{
-                ...this.state.form,
-                [key]:elm.target.value
-            }
-        }));
+        this.updateFormState(key, elm.target.value);
     }, 50);
 
     onCheckBoxChangeDeBounce = debounce(({elm, key}) => {
-        this.setState(Object.assign({}, {
-            form:{
-                ...this.state.form,
-                [key]:elm.target.checked
-            }
-        }));
+        this.updateFormState(key, elm.target.checked);
     }, 50);
 
     onTextChange = ({elm, key}) =>{
@@ -129,7 +119,8 @@ Navigation.propTypes = {
     area_list: PropTypes.object.isRequired,
     region_list: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    onSubmitForm: PropTypes.func.isRequired
+    onSubmitForm: PropTypes.func.isRequired,
+    onFormUpdateField: PropTypes.func.isRequired
 };
 
 Navigation.defaultProps = {
@@ -141,7 +132,8 @@ Navigation.defaultProps = {
     area_list:{},
     region_list:{},
     fields:[],
-    onSubmitForm:(e)=>{e.preventDefault();}
+    onSubmitForm:(e)=>{e.preventDefault();},
+    onFormUpdateField:(e)=>{}
 };
 
 export default Navigation;

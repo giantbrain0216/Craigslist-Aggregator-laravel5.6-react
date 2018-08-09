@@ -25,6 +25,15 @@ export const searchConfigurationReducer = (state = initialState, action) => {
                 site:action.site
             };
 
+        case constants.actionTypes.SEARCH_SETTINGS_UPDATE_FORM_FIELDS:
+            return {
+                ...state,
+                form:{
+                    ...state.form,
+                    [action.key]:action.value
+                }
+            };
+
         case constants.actionTypes.SEARCH_SETTINGS_UPDATE_BASIC_CONF_DATA:
             return {
                 ...state,

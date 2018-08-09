@@ -1,20 +1,17 @@
 import React, {Component} from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import styles from 'styled-components';
+import RegionPartial from './RegionPartial';
 
-const RegionPartial = ({region, callback}) =>{
-    return (
-        <label htmlFor={region.type}>
-            <input
-                id={region.type}
-                onChange={callback}
-                className="regions"
-                type="checkbox"
-                checked={region.selected}
-                value={region.type}
-            />{region.name}</label>
-    );
-};
+const RegionListContainer = styles.div`
+  display: none;
+  border: 1px solid gainsboro;
+  
+  &.open {
+    display: block;
+  }
+`;
 
 class Regions extends Component {
 
@@ -39,7 +36,7 @@ class Regions extends Component {
                         <span>open</span>
                     }
                 </a>
-                <div className={this.regionListStyles()} id="region_list">
+                <RegionListContainer className={this.regionListStyles()}>
                     {Object.entries(this.props.region_list).map(([key, region])=>{
                         return (
                             <RegionPartial
@@ -48,7 +45,7 @@ class Regions extends Component {
                                 callback={(e)=>this.props.onUpdateRegionSelection({elm:e, region})} />
                         );
                     })}
-                </div>
+                </RegionListContainer>
             </div>
         );
     }

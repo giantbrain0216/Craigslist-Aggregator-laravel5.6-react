@@ -11,6 +11,12 @@ export const toggleAreaList = () => ({
     type: constants.actionTypes.SEARCH_SETTINGS_AREA_TOGGLE
 });
 
+export const updateFormFields = ({key, value}) => ({
+    type: constants.actionTypes.SEARCH_SETTINGS_UPDATE_FORM_FIELDS,
+    key,
+    value
+});
+
 export const updateBasicConfData = ({title, page_title, search_example}) => ({
     type: constants.actionTypes.SEARCH_SETTINGS_UPDATE_BASIC_CONF_DATA,
     title,

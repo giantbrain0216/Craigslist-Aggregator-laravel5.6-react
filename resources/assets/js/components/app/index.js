@@ -4,6 +4,15 @@ import Navigation from '../navigation/index';
 import Content from '../content/index';
 import Home from '../home/index';
 import { Route, Switch } from 'react-router-dom';
+import styles from 'styled-components';
+
+const BodyContainer = styles.div`
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+`;
 
 class App extends Component {
 
@@ -14,7 +23,7 @@ class App extends Component {
 
     render(){
         return (
-            <div className="container">
+            <BodyContainer>
                 <TopHeader />
                 <Switch>
                     <Route exact path="/" component={Home} />
@@ -22,7 +31,7 @@ class App extends Component {
                     <Route component={Home} />
                 </Switch>
                 <Navigation />
-            </div>
+            </BodyContainer>
         );
     }
 }
