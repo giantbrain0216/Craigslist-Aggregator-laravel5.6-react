@@ -2,6 +2,7 @@ import each from "lodash/each";
 import reduce from "lodash/reduce";
 import axios from "axios/index";
 import constants from "../constants";
+import * as lib from '../lib';
 
 export const toggleRegionList = () => ({
     type: constants.actionTypes.SEARCH_SETTINGS_REGION_TOGGLE
@@ -96,21 +97,8 @@ export const fetchSearchSettings =  (site) => async (dispatch) => {
         }
     });
 
-    region_list = reduce(region_list, (collector, region)=>{
-        region.selected = false;
-        collector[region.type] = region;
-        return collector;
-    }, {});
-
-    area_list = reduce(area_list, function(collector, state)
-    {
-        each(state, function(rec)
-        {
-            rec.selected = false;
-            collector[rec.partial] = rec;
-        });
-        return collector;
-    }, {});
+    region_list = lib.parseRegionList(region_list);
+    area_list = lib.parseAreaList(area_list);
 
     dispatch(updateExtendedConfData({
         form:{

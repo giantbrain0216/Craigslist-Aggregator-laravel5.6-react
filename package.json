@@ -58,6 +58,7 @@
     },
     "jest": {
         "testRegex": "resources/assets/js/.*.spec.js$",
+        "testURL": "http://localhost",
         "setupTestFrameworkScriptFile": "./resources/assets/js/setupTests.js",
         "snapshotSerializers": [
             "enzyme-to-json/serializer"
