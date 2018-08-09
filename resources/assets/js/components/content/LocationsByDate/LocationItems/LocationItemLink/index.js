@@ -7,7 +7,7 @@ const LocationItemLink = ({title, link}) =>{
             <a title={title}
                target="_blank"
                href={link}>
-                <span>{title}</span>
+                <span dangerouslySetInnerHTML={{__html:title}} />
             </a>
         </li>
     );
