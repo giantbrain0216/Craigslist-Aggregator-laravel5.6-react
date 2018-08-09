@@ -5,6 +5,7 @@ const LocationItemLink = ({title, link}) =>{
     return (
         <li>
             <a title={title}
+               rel="noreferrer"
                target="_blank"
                href={link}>
                 <span dangerouslySetInnerHTML={{__html:title}} />
