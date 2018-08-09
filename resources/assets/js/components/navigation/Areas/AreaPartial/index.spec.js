@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Areas from './index';
+import AreaPartial from './index';
 
-describe('Areas', () => {
+describe('AreaPartial', () => {
     it('renders the component', () => {
-        const wrapper = shallow(<Areas />);
+        const wrapper = shallow(<AreaPartial />);
         expect(wrapper).toMatchSnapshot();
     });
 });

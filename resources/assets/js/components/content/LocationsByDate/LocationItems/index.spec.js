@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Content from './index';
+import LocationItems from './index';
 
-describe('Content', () => {
+describe('LocationItems', () => {
     it('renders the component', () => {
-        const wrapper = shallow(<Content />);
+        const wrapper = shallow(<LocationItems />);
         expect(wrapper).toMatchSnapshot();
     });
 });

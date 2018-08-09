@@ -1,6 +1,4 @@
 import constants from '../constants';
-import filter from 'lodash/filter';
-import map from 'lodash/map';
 
 export const initialState = {
     sections:['stuff','jobs','gigs','places','services'],
@@ -15,7 +13,7 @@ export const initialState = {
     page_search_example:'',
     area_list:{},
     region_list:{},
-    fields:{}
+    fields:[]
 };
 
 export const searchConfigurationReducer = (state = initialState, action) => {

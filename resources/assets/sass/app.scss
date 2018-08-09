@@ -234,21 +234,6 @@ form button:focus, form input[type="text"]:focus, form input[type="password"]:fo
   padding: 10px 20px;
 }
 
-#find_items {
-  position: relative;
-  top: 25px;
-  left: 0px;
-  width: 250px;
-  background-color: #fff;
-  border: solid 1px #999;
-  padding: 10px;
-  border-left: none;
-  border-top: none;
-  margin: 0px;
-  -moz-box-shadow: 0px 1px 3px #000;
-  -webkit-box-shadow: 0px 1px 3px #000;
-}
-
 #change_size_container {
   display: block;
 }
@@ -261,24 +246,6 @@ form button:focus, form input[type="text"]:focus, form input[type="password"]:fo
 #areas_list label:nth-child(odd),
 #region_list label:nth-child(odd) {
   background-color: rgba(0, 0, 0, 0.07);
-}
-
-a#donate {
-  text-decoration: none;
-  display: block;
-  border-top: solid 1px #999;
-  margin: -10px;
-  margin-top: 0px;
-  line-height: 30px;
-  text-align: center;
-}
-
-a#donate:hover {
-  background-color: #F4FDFF;
-}
-
-a#donate:focus {
-  color: red;
 }
 
 .linkhover {

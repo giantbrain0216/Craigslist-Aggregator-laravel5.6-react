@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TopHeader from './index';
+import Navigation from './navigation_component';
 
-describe('TopHeader', () => {
+describe('Navigation', () => {
     it('renders the component', () => {
-        const wrapper = shallow(<TopHeader />);
+        const wrapper = shallow(<Navigation />);
         expect(wrapper).toMatchSnapshot();
     });
 });

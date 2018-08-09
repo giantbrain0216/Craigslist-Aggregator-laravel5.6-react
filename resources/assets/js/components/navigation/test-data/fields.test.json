@@ -1,0 +1,42 @@
+{
+  "title": "Job Search Via Craigslist",
+  "server_name": "clag-react.iaminterestedin.xyz",
+  "sites": {
+    "findstuff": false,
+    "findjobs": false,
+    "findgigs": false,
+    "findplaces": false,
+    "findservices": false
+  },
+  "site": "findjobs",
+  "page_type": "findjobs",
+  "page_title": "Find yourself a Job",
+  "search_example": "Ex: php, C#, .NET, ASP.NET, Linux",
+  "fields": [
+    {
+      "argId": "search_term",
+      "argTitle": "Search",
+      "argName": "query",
+      "argKey": "{query}",
+      "argType": "text"
+    },
+    {
+      "argName": "srchType",
+      "argType": "radio",
+      "radios": [
+        {
+          "checked": true,
+          "arg_name": "Use Title",
+          "arg_name_id": "Use_Title",
+          "arg": "T"
+        },
+        {
+          "checked": false,
+          "arg_name": "Use Post",
+          "arg_name_id": "Use_Post",
+          "arg": "A"
+        }
+      ]
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TopHeader from './index';
+import LocationByDate from './index';
 
-describe('TopHeader', () => {
+describe('LocationByDate', () => {
     it('renders the component', () => {
-        const wrapper = shallow(<TopHeader />);
+        const wrapper = shallow(<LocationByDate />);
         expect(wrapper).toMatchSnapshot();
     });
 });
