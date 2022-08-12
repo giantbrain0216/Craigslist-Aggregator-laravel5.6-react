@@ -30,7 +30,7 @@ Please make sure that http services are not running on your local machine, if so
   - `npm run dev` or `npm run watch` for watch listener
 
 ### Troubleshooting
---------------------------
+-------------------------
 - sometimes you're in trouble, and things just break, you may need to rebuild your images
   - `docker-compose down`
   - `docker-compose build --no-cache nginx mysql phpmyadmin workspace php-fpm`
